@@ -1,0 +1,23 @@
+avrdragonworkaround.name=AVR Dragon (workaround)
+avrdragonworkaround.communication=usb
+avrdragonworkaround.protocol=dragon_isp
+avrdragonworkaround.program.protocol=dragon_isp
+avrdragonworkaround.program.tool=avrdude
+avrdragonworkaround.program.extra_params=-Pusb "-Uflash:w:{runtime.platform.path}/bootloaders/{bootloader.file}:i"
+avrdragonworkaround.program.program_extra_params=-Pusb
+
+avrdragonhvspworkaround.name=AVR Dragon HVSP mode (workaround)
+avrdragonhvspworkaround.communication=usb
+avrdragonhvspworkaround.protocol=dragon_hvsp
+avrdragonhvspworkaround.program.protocol=dragon_hvsp
+avrdragonhvspworkaround.program.tool=avrdude
+avrdragonhvspworkaround.program.extra_params=-Pusb "-Uflash:w:{runtime.platform.path}/bootloaders/{bootloader.file}:i"
+avrdragonhvspworkaround.program.program_extra_params=-Pusb
+
+avrdragonppworkaround.name=AVR Dragon PP mode (workaround)
+avrdragonppworkaround.communication=usb
+avrdragonppworkaround.protocol=dragon_pp
+avrdragonppworkaround.program.protocol=dragon_pp
+avrdragonppworkaround.program.tool=avrdude
+avrdragonppworkaround.program.extra_params=-Pusb "-Uflash:w:{runtime.platform.path}/bootloaders/{bootloader.file}:i"
+avrdragonppworkaround.program.program_extra_params=-Pusb
