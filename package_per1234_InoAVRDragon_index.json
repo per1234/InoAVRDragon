@@ -1,0 +1,35 @@
+{
+  "packages": [
+    {
+      "name": "InoAVRDragon",
+      "maintainer": "per1234",
+      "websiteURL": "https://github.com/per1234/InoAVRDragon",
+      "email": "",
+      "help": {
+        "online": ""
+      },
+      "platforms": [
+        {
+          "name": "InoAVRDragon",
+          "architecture": "avr",
+          "version": "1.0.0",
+          "category": "Contributed",
+          "help": {
+            "online": ""
+          },
+          "url": "https://github.com/per1234/InoAVRDragon/releases/download/1.0.0/InoAVRDragon-1.0.0-BoardsManager.tar.bz2",
+          "archiveFileName": "InoAVRDragon-1.0.0-BoardsManager.tar.bz2",
+          "checksum": "SHA-256:93bc2429f19030a645597d3674dd81225cdea78346a826dc8080a7953d5a1082",
+          "size": "4376",
+          "boards": [
+            {"name": "AVR Dragon (workaround)"},
+            {"name": "AVR Dragon HVSP mode (workaround)"},
+            {"name": "AVR Dragon PP mode (workaround)"}
+          ],
+          "toolsDependencies": []
+        }
+      ],
+      "tools": []
+    }
+  ]
+}
