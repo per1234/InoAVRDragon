@@ -1,30 +1,37 @@
 # This file is used to configure the Travis CI tests for this repository
 
-sudo: false
+matrix:
+  include:
+
+    # Check all the files in the repository for consistent formatting
+    - name: 'File Formatting Checks'
+      language: minimal
+      script:
+        # Check for files starting with a blank line
+        - find . -path './.git' -prune -or -type f -print0 | xargs -0 -L1 bash -c 'head -1 "$0" | grep --binary-files=without-match --regexp="^$"; if [[ "$?" == "0" ]]; then echo "Blank line found at start of $0."; false; fi'
+        # Check for tabs
+        - find . -path './.git' -prune -or -type f -exec grep --with-filename --line-number --binary-files=without-match --regexp=$'\t' '{}' \; -exec echo 'Tab found.' \; -exec false '{}' +
+        # Check for trailing whitespace
+        - find . -path './.git' -prune -or -type f -exec grep --with-filename --line-number --binary-files=without-match --regexp='[[:blank:]]$' '{}' \; -exec echo 'Trailing whitespace found.' \; -exec false '{}' +
+        # Check for non-Unix line endings
+        - find . -path './.git' -prune -or -type f -exec grep --files-with-matches --binary-files=without-match --regexp=$'\r$' '{}' \; -exec echo 'Non-Unix EOL detected.' \; -exec false '{}' +
+        # Check for blank lines at end of files
+        - find . -path './.git' -prune -or -type f -print0 | xargs -0 -L1 bash -c 'tail -1 "$0" | grep --binary-files=without-match --regexp="^$"; if [[ "$?" == "0" ]]; then echo "Blank line found at end of $0."; false; fi'
+        # Check for files that don't end in a newline (https://stackoverflow.com/a/25686825)
+        - find . -path './.git' -prune -or -type f -print0 | xargs -0 -L1 bash -c 'if test "$(grep --files-with-matches --binary-files=without-match --max-count=1 --regexp='.*' "$0")" && test "$(tail --bytes=1 "$0")"; then echo "No new line at end of $0."; false; fi'
 
 
-# It's necessary to do this just for codespell
-language: python
-python: 3.6
+    # Check all files in the repository for commonly misspelled words
+    - name: 'Spell Check'
+      language: python
+      python: 3.6
+      install:
+        # Install codespell
+        # https://github.com/codespell-project/codespell
+        - pip install codespell
 
-
-script:
-  # Check for files starting with a blank line
-  - find . -path './.git' -prune -or -type f -print0 | xargs -0 -L1 bash -c 'head -1 "$0" | grep --binary-files=without-match --regexp="^$"; if [[ "$?" == "0" ]]; then echo "Blank line found at start of $0."; false; fi'
-  # Check for tabs
-  - find . -path './.git' -prune -or -type f -exec grep --with-filename --line-number --binary-files=without-match --regexp=$'\t' '{}' \; -exec echo 'Tab found.' \; -exec false '{}' +
-  # Check for trailing whitespace
-  - find . -path './.git' -prune -or -type f -exec grep --with-filename --line-number --binary-files=without-match --regexp='[[:blank:]]$' '{}' \; -exec echo 'Trailing whitespace found.' \; -exec false '{}' +
-  # Check for non-Unix line endings
-  - find . -path './.git' -prune -or -type f -exec grep --files-with-matches --binary-files=without-match --regexp=$'\r$' '{}' \; -exec echo 'Non-Unix EOL detected.' \; -exec false '{}' +
-  # Check for blank lines at end of files
-  - find . -path './.git' -prune -or -type f -print0 | xargs -0 -L1 bash -c 'tail -1 "$0" | grep --binary-files=without-match --regexp="^$"; if [[ "$?" == "0" ]]; then echo "Blank line found at end of $0."; false; fi'
-  # Check for files that don't end in a newline (https://stackoverflow.com/a/25686825)
-  - find . -path './.git' -prune -or -type f -print0 | xargs -0 -L1 bash -c 'if test "$(grep --files-with-matches --binary-files=without-match --max-count=1 --regexp='.*' "$0")" && test "$(tail --bytes=1 "$0")"; then echo "No new line at end of $0."; false; fi'
-
-  # Check for typos
-  - pip install codespell
-  - codespell --skip="${TRAVIS_BUILD_DIR}/.git" --ignore-words="${TRAVIS_BUILD_DIR}/etc/codespell-ignore-words-list.txt" "${TRAVIS_BUILD_DIR}"
+      script:
+        - codespell --skip="${TRAVIS_BUILD_DIR}/.git" "${TRAVIS_BUILD_DIR}"
 
 
 notifications:
@@ -33,6 +40,7 @@ notifications:
     on_failure: always
   webhooks:
     urls:
+      # Use TravisBuddy to automatically comment on any pull request that results in a failing CI build
       - https://www.travisbuddy.com/
     on_success: never
     on_failure: always
