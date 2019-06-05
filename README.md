@@ -78,4 +78,4 @@ The **Upload Using Programmer** process should work as normal when using the Ino
 
 
 ## Contributing
-Pull requests or issue reports are welcome! Please see the [contribution rules](https://github.com/per1234/InoAVRDragon/blob/master/CONTRIBUTING.md) for instructions.
+Pull requests or issue reports are welcome! Please see the [contribution rules](https://github.com/per1234/InoAVRDragon/blob/master/.github/CONTRIBUTING.md) for instructions.
