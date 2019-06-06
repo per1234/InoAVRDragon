@@ -1,5 +1,12 @@
 # This file is used to configure the Travis CI tests for this repository
 
+# This is required to enable Travis CI builds of the gh-pages branch
+branches:
+  only:
+    - gh-pages
+    - /.*/
+
+
 matrix:
   include:
 
